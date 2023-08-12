@@ -1,0 +1,26 @@
+# 记录当前服务器的ip和启动端口号，当前服务器的ip用于生成对应的视频链接地址
+[server]
+ip = "127.0.0.1"
+port = 8080
+
+# 关系型数据库配置
+[mysql]
+host = "host.docker.internal"
+port = 3307
+database = "douyin"
+username = "root"
+password = "123456"
+charset = "utf8mb4"
+parse_time = true
+loc = "Local"
+
+# redis存储每个用户是否对某个视频点赞，以及关注了某个人
+[redis]
+host = "host.docker.internal:6379"
+port = 49153
+database = 0
+
+# 保存视频的路径，截图的路径(截图放在lib目录)
+[path]
+ffmpeg_path = "./lib/ffmpeg.exe"
+static_source_path = "./static"
