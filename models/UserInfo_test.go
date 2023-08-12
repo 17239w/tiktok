@@ -12,6 +12,7 @@ func TestMain(m *testing.M) {
 	os.Exit(code)
 }
 
+// 查找用户关注列表
 func TestUserInfoDAO_QueryUserFollowsByUserId(t *testing.T) {
 	var userList []*UserInfo
 	err := NewUserInfoDAO().QueryUserFollowsByUserId(1, &userList)
@@ -23,6 +24,7 @@ func TestUserInfoDAO_QueryUserFollowsByUserId(t *testing.T) {
 	}
 }
 
+// 查找用户粉丝列表
 func TestUserInfoDAO_QueryUserFollowersByUserId(t *testing.T) {
 	var userList []*UserInfo
 	err := NewUserInfoDAO().QueryUserFollowersByUserId(1, &userList)

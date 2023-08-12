@@ -9,9 +9,9 @@
 ➜  tiktok git:(main) ✗ go mod init tiktok
 ```
 
-1. 配置config
+2. 配置config
 
 连接mysql数据库、redis
 
-3. 配置docker-compose.yml
+3. 配置docker-compose.yml、Dockerfile
 

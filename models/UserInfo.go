@@ -104,7 +104,7 @@ func (dao *UserInfoDAO) AddUserFollow(userId int64, followToId int64) error {
 			return err
 		}
 		//更新user_relations表
-		if err := tx.Exec("INSERT INTO user_relations(user_id,follow_to_id) VALUES(?,?)", userId, followToId).Error; err != nil {
+		if err := tx.Exec("INSERT INTO user_relations(user_info_id,follow_id) VALUES(?,?)", userId, followToId).Error; err != nil {
 			return err
 		}
 		return nil
@@ -128,7 +128,7 @@ func (dao *UserInfoDAO) DeleteUserFollow(userId int64, followToId int64) error {
 			return err
 		}
 		//更新user_relations表
-		if err := tx.Exec("DELETE FROM user_relations WHERE user_id=? AND follow_to_id=?", userId, followToId).Error; err != nil {
+		if err := tx.Exec("DELETE FROM user_relations WHERE user_info_id=? AND follow_id=?", userId, followToId).Error; err != nil {
 			return err
 		}
 		return nil
@@ -142,8 +142,8 @@ func (dao *UserInfoDAO) QueryUserFollowsByUserId(userId int64, userFollowsList *
 		return ErrIvdPtr
 	}
 	var err error
-	// user_relations.user_info_id=? AND user_relations.following_id=user_infos.id
-	if err = DB.Raw("SELECT i.* FROM user_relations r,user_infos i WHERE r.user_info_id=? AND r.following_id=i.id", userId).Scan(userFollowsList).Error; err != nil {
+	// user_relations.user_info_id=? AND user_relations.follow_id=user_infos.id
+	if err = DB.Raw("SELECT i.* FROM user_relations r,user_infos i WHERE r.user_info_id=? AND r.follow_id=i.id", userId).Scan(userFollowsList).Error; err != nil {
 		return err
 	}
 	// 若用户关注列表为空
@@ -160,8 +160,8 @@ func (dao *UserInfoDAO) QueryUserFollowersByUserId(userId int64, userFollowersLi
 		return ErrIvdPtr
 	}
 	var err error
-	// user_relations.following_id=? AND user_relations.user_info_id=user_infos.id
-	if err = DB.Raw("SELECT i.* FROM user_relations r,user_infos i WHERE r.following_id=? AND r.user_info_id=i.id", userId).Scan(userFollowersList).Error; err != nil {
+	// user_relations.follow_id=? AND user_relations.user_info_id=user_infos.id
+	if err = DB.Raw("SELECT i.* FROM user_relations r,user_infos i WHERE r.follow_id=? AND r.user_info_id=i.id", userId).Scan(userFollowersList).Error; err != nil {
 		return err
 	}
 	// 若用户粉丝列表为空
