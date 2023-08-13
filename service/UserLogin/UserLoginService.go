@@ -7,9 +7,9 @@ import (
 )
 
 const (
-	MaxUsernameLength = 32 // 用户名最大长度
-	MaxPasswordLength = 32 // 密码最大长度
-	MinPasswordLength = 1  // 密码最小长度
+	MaxUsernameLength = 100 // 用户名最大长度
+	MaxPasswordLength = 20  // 密码最大长度
+	MinPasswordLength = 1   // 密码最小长度
 )
 
 // UserLoginResponse：用户登录响应
@@ -23,9 +23,9 @@ type UserLoginService struct {
 	username string
 	password string
 
-	data   *UserLoginResponse // 用户登录响应
-	userid int64
-	token  string
+	userloginresponse *UserLoginResponse // 用户登录响应
+	userid            int64
+	token             string
 }
 
 // QueryUserLogin:查询用户是否存在，并返回token和id
@@ -52,7 +52,7 @@ func (service *UserLoginService) Do() (*UserLoginResponse, error) {
 	if err := service.packData(); err != nil {
 		return nil, err
 	}
-	return service.data, nil
+	return service.userloginresponse, nil
 }
 
 // 1.对参数进行合法性验证
@@ -90,7 +90,7 @@ func (service *UserLoginService) prepareData() error {
 
 // 3.打包最终数据
 func (service *UserLoginService) packData() error {
-	service.data = &UserLoginResponse{
+	service.userloginresponse = &UserLoginResponse{
 		UserId: service.userid,
 		Token:  service.token,
 	}

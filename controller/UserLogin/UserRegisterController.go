@@ -1,7 +1,7 @@
 package userlogin
 
 import (
-	"fmt"
+	"log"
 	"net/http"
 	"tiktok/models"
 	userlogin "tiktok/service/UserLogin"
@@ -31,7 +31,7 @@ func UserRegisterController(c *gin.Context) {
 		return
 	}
 	//打印username和password
-	fmt.Println(username, password)
+	log.Println("Controller层:username:", username, "password:", password)
 	// 调用service层，进行注册
 	registerResponse, err := userlogin.UserRegister(username, password)
 	if err != nil {

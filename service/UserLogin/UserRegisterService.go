@@ -2,6 +2,8 @@ package userlogin
 
 import (
 	"errors"
+	"fmt"
+	"log"
 	"tiktok/middleware"
 	"tiktok/models"
 )
@@ -18,6 +20,8 @@ type UserRegisterService struct {
 
 // UserRegister：注册用户，得到token和id
 func UserRegister(username, password string) (*UserLoginResponse, error) {
+	//打印日志
+	log.Printf("Service层(注册用户，得到token和id)：username:%s, password:%s", username, password)
 	return NewUserRegisterService(username, password).Do()
 }
 
@@ -45,26 +49,29 @@ func (service *UserRegisterService) Do() (*UserLoginResponse, error) {
 
 // 1.对参数进行合法性验证
 func (service *UserRegisterService) checkNum() error {
+	//打印日志
+	log.Printf("Service层(对参数进行合法性验证)：username:%s, password:%s", service.username, service.password)
 	if service.username == "" {
+		fmt.Println("username is null")
 		return errors.New("username is null")
 	}
 	if len(service.username) > MaxUsernameLength {
+		fmt.Println("the length of username is too long")
 		return errors.New("the length of username is too long")
 	}
+
 	if service.password == "" {
+		fmt.Println("password is null")
 		return errors.New("password is null")
-	}
-	if len(service.password) < MinPasswordLength {
-		return errors.New("the length of password is too short")
-	}
-	if len(service.password) > MaxPasswordLength {
-		return errors.New("the length of password is too long")
 	}
 	return nil
 }
 
 // 2.更新数据到数据库
 func (service *UserRegisterService) updateData() error {
+
+	//打印日志
+	log.Printf("models层:(将login信息保存到数据库)：username:%s, password:%s", service.username, service.password)
 
 	//调用models层，创建一个userLogin结构体和一个userinfo结构体
 	userLogin := models.UserLogin{Username: service.username, Password: service.password}
