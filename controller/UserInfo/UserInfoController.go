@@ -10,7 +10,7 @@ import (
 
 // UserResponse：用户信息响应
 type UserResponse struct {
-	models.CommonResponse
+	models.StatusCodeResponse
 	User *models.UserInfo `json:"user"`
 }
 
@@ -63,14 +63,14 @@ func (proxy *ProxyUserInfo) ControllerQueryUserInfoByUserId(id interface{}) erro
 // UserInfoError：返回错误信息，查询用户信息失败
 func (p *ProxyUserInfo) UserInfoError(msg string) {
 	p.context.JSON(http.StatusOK, UserResponse{
-		CommonResponse: models.CommonResponse{StatusCode: 1, StatusMsg: msg},
+		StatusCodeResponse: models.StatusCodeResponse{StatusCode: 1, StatusMsg: msg},
 	})
 }
 
 // UserInfoSuccess：返回用户信息，查询用户信息成功
 func (p *ProxyUserInfo) UserInfoSuccess(user *models.UserInfo) {
 	p.context.JSON(http.StatusOK, UserResponse{
-		CommonResponse: models.CommonResponse{StatusCode: 0},
-		User:           user,
+		StatusCodeResponse: models.StatusCodeResponse{StatusCode: 0},
+		User:               user,
 	})
 }

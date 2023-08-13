@@ -45,14 +45,14 @@ func NoAuthToGetUserId() gin.HandlerFunc {
 		}
 		//用户不存在
 		if rawId == "" {
-			c.JSON(http.StatusOK, models.CommonResponse{StatusCode: 401, StatusMsg: "用户不存在"})
+			c.JSON(http.StatusOK, models.StatusCodeResponse{StatusCode: 401, StatusMsg: "用户不存在"})
 			c.Abort() //阻止执行
 			return
 		}
 		//用户存在，将user_id转换为int64类型
 		userId, err := strconv.ParseInt(rawId, 10, 64)
 		if err != nil {
-			c.JSON(http.StatusOK, models.CommonResponse{StatusCode: 401, StatusMsg: "用户不存在"})
+			c.JSON(http.StatusOK, models.StatusCodeResponse{StatusCode: 401, StatusMsg: "用户不存在"})
 			c.Abort() //阻止执行
 		}
 		//将用户id存入Gin上下文

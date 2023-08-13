@@ -74,14 +74,14 @@ func JWTMiddleware() gin.HandlerFunc {
 		}
 		//用户不存在
 		if tokenStr == "" {
-			c.JSON(http.StatusOK, models.CommonResponse{StatusCode: 401, StatusMsg: "用户不存在"})
+			c.JSON(http.StatusOK, models.StatusCodeResponse{StatusCode: 401, StatusMsg: "用户不存在"})
 			c.Abort() //阻止执行
 			return
 		}
 		//验证token
 		tokenStruck, ok := ParseToken(tokenStr)
 		if !ok {
-			c.JSON(http.StatusOK, models.CommonResponse{
+			c.JSON(http.StatusOK, models.StatusCodeResponse{
 				StatusCode: 403,
 				StatusMsg:  "token不正确",
 			})
@@ -90,7 +90,7 @@ func JWTMiddleware() gin.HandlerFunc {
 		}
 		//token超时
 		if time.Now().Unix() > tokenStruck.ExpiresAt {
-			c.JSON(http.StatusOK, models.CommonResponse{
+			c.JSON(http.StatusOK, models.StatusCodeResponse{
 				StatusCode: 402,
 				StatusMsg:  "token过期",
 			})
