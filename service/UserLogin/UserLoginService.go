@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	MaxUsernameLength = 10 // 用户名最大长度
-	MaxPasswordLength = 20 // 密码最大长度
+	MaxUsernameLength = 32 // 用户名最大长度
+	MaxPasswordLength = 32 // 密码最大长度
 	MinPasswordLength = 8  // 密码最小长度
 )
 
