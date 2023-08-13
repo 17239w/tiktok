@@ -9,7 +9,7 @@ import (
 const (
 	MaxUsernameLength = 32 // 用户名最大长度
 	MaxPasswordLength = 32 // 密码最大长度
-	MinPasswordLength = 8  // 密码最小长度
+	MinPasswordLength = 1  // 密码最小长度
 )
 
 // UserLoginResponse：用户登录响应
@@ -79,7 +79,7 @@ func (service *UserLoginService) prepareData() error {
 		return err
 	}
 	service.userid = login.UserInfoId
-	//颁发token
+	//调用middleware层，颁发token
 	token, err := middleware.ReleaseToken(login)
 	if err != nil {
 		return err

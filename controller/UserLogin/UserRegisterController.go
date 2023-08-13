@@ -1,6 +1,7 @@
 package userlogin
 
 import (
+	"fmt"
 	"net/http"
 	"tiktok/models"
 	userlogin "tiktok/service/UserLogin"
@@ -17,7 +18,7 @@ type UserRegisterResponse struct {
 // UserRegisterController：用户注册控制器
 func UserRegisterController(c *gin.Context) {
 	username := c.Query("username")
-	rawValue, _ := c.Get("password") // 原始密码
+	rawValue, _ := c.Get("password") // 原始密码,密码通常不会作为查询参数直接附加在URL上进行传递
 	// 将password-->string
 	password, ok := rawValue.(string)
 	if !ok {
@@ -29,6 +30,8 @@ func UserRegisterController(c *gin.Context) {
 		})
 		return
 	}
+	//打印username和password
+	fmt.Println(username, password)
 	// 调用service层，进行注册
 	registerResponse, err := userlogin.UserRegister(username, password)
 	if err != nil {
@@ -41,11 +44,10 @@ func UserRegisterController(c *gin.Context) {
 		return
 	}
 
-	// 返回UserRegisterResponse
+	// 返回StatusCodeResponse和UserRegisterResponse
 	c.JSON(http.StatusOK, UserRegisterResponse{
 		StatusCodeResponse: models.StatusCodeResponse{
 			StatusCode: 0,
-			StatusMsg:  "注册成功",
 		},
 		UserLoginResponse: registerResponse,
 	})

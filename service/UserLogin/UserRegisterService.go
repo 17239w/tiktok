@@ -11,7 +11,7 @@ type UserRegisterService struct {
 	username string
 	password string
 
-	userloginresponse *UserLoginResponse // 保存 用户登陆成功后的相应数据，包括token和id
+	userloginresponse *UserLoginResponse // 保存 用户登陆成功后的响应数据，包括token和id
 	userid            int64
 	token             string
 }
@@ -21,7 +21,7 @@ func UserRegister(username, password string) (*UserLoginResponse, error) {
 	return NewUserRegisterService(username, password).Do()
 }
 
-// NewUserRegisterService：创建一个 UserRegisterService结构体
+// NewUserRegisterService：创建一个UserRegisterService结构体
 func NewUserRegisterService(username, password string) *UserRegisterService {
 	return &UserRegisterService{username: username, password: password}
 }
@@ -54,14 +54,21 @@ func (service *UserRegisterService) checkNum() error {
 	if service.password == "" {
 		return errors.New("password is null")
 	}
+	if len(service.password) < MinPasswordLength {
+		return errors.New("the length of password is too short")
+	}
+	if len(service.password) > MaxPasswordLength {
+		return errors.New("the length of password is too long")
+	}
 	return nil
 }
 
 // 2.更新数据到数据库
 func (service *UserRegisterService) updateData() error {
 
-	userLogin := models.UserLogin{Username: service.username, Password: service.password} //创建一个userLogin结构体
-	userinfo := models.UserInfo{User: &userLogin, Name: service.username}                 //创建一个userinfo结构体
+	//调用models层，创建一个userLogin结构体和一个userinfo结构体
+	userLogin := models.UserLogin{Username: service.username, Password: service.password}
+	userinfo := models.UserInfo{User: &userLogin, Name: service.username}
 
 	//调用models层，判断用户名是否已经存在
 	userLoginDAO := models.NewUserLoginDao()
@@ -69,7 +76,7 @@ func (service *UserRegisterService) updateData() error {
 		return errors.New("用户名已存在")
 	}
 
-	//调用models层，更新操作 (由于userLogin属于userInfo，故更新userInfo即可)
+	//调用models层，更新操作 (由于userLogin的父表是userInfo，故更新userInfo即可)
 	userInfoDAO := models.NewUserInfoDAO()
 	err := userInfoDAO.AddUserInfo(&userinfo)
 	if err != nil {
@@ -81,8 +88,8 @@ func (service *UserRegisterService) updateData() error {
 	if err != nil {
 		return err
 	}
-	service.token = token        //将token赋值给结构体
-	service.userid = userinfo.Id //将id赋值给结构体
+	service.token = token
+	service.userid = userinfo.Id
 	return nil
 }
 
