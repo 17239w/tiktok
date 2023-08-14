@@ -2,6 +2,7 @@ package userinfo
 
 import (
 	"errors"
+	"log"
 	"net/http"
 	"tiktok/models"
 
@@ -24,11 +25,13 @@ func NewProxyUserInfo(c *gin.Context) *ProxyUserInfo {
 	return &ProxyUserInfo{context: c}
 }
 
-// Controller层：负责接收请求，调用models层的方法，返回响应
+// UserInfoController：获取用户信息控制器
 func UserInfoController(c *gin.Context) {
 	proxy := NewProxyUserInfo(c)
 	//从JWTMiddleware()中间件中获取user_id
 	id, ok := c.Get("user_id")
+	//打印日志
+	log.Println("Controller层(获取用户信息)user_id:", id)
 	if !ok {
 		proxy.UserInfoError("获取用户信息失败")
 		return
@@ -63,7 +66,10 @@ func (proxy *ProxyUserInfo) ControllerQueryUserInfoByUserId(id interface{}) erro
 // UserInfoError：返回错误信息，查询用户信息失败
 func (p *ProxyUserInfo) UserInfoError(msg string) {
 	p.context.JSON(http.StatusOK, UserResponse{
-		StatusCodeResponse: models.StatusCodeResponse{StatusCode: 1, StatusMsg: msg},
+		StatusCodeResponse: models.StatusCodeResponse{
+			StatusCode: 1,
+			StatusMsg:  msg,
+		},
 	})
 }
 

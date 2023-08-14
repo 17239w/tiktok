@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"log"
 	"net/http"
 	"tiktok/models" //引用tiktok/models包中的类型、函数和变量
 	"time"
@@ -67,6 +68,8 @@ func JWTMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// 获取token
 		tokenStr := c.Query("token")
+		//打印日志
+		log.Println("middleware层(鉴权并设置user_id):tokenStr:", tokenStr)
 		// 如果查询参数中没有token，则尝试从POST表单中获取token字段的值
 		// 从POST请求的urlencoded表单或者multipart表单中获取指定的键值。如果键存在，它会返回对应的值；如果键不存在，它会返回一个空字符串（""）
 		if tokenStr == "" {

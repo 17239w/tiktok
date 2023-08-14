@@ -14,7 +14,7 @@ type UserLoginResponse struct {
 }
 
 // UserLoginController：用户登录控制器
-func UserLoginHandler(c *gin.Context) {
+func UserLoginController(c *gin.Context) {
 	username := c.Query("username")
 	raw, _ := c.Get("password")
 	password, ok := raw.(string)

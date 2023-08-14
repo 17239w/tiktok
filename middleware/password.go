@@ -3,6 +3,7 @@ package middleware
 import (
 	"crypto/sha1"
 	"encoding/hex"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -28,13 +29,15 @@ func AuthMiddleWare() gin.HandlerFunc {
 		if password == "" {
 			password = context.PostForm("password")
 		}
-		// 将password存入 Gin上下文中
+		// 将password存入Gin上下文中
 		context.Set("password", SHA1(password))
+		//打印日志
+		log.Println("AuthMiddleWare(鉴权中间件，对密码进行SHA1哈希)password:", password)
 		context.Next()
 	}
 }
 
-// NoAuthToGetUserId：无鉴权中间件，从请求中获取用户id
+// NoAuthToGetUserId：无鉴权中间件，从请求中获取user_id
 func NoAuthToGetUserId() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		//从请求中获取用户id
