@@ -25,7 +25,10 @@ func Init() *gin.Engine {
 	baseGroup.POST("/user/login/", middleware.AuthMiddleWare(), userlogin.UserLoginController)
 	// /douyin/user/：获取用户的id、昵称，如果实现社交部分的功能，还会返回关注数和粉丝数
 	baseGroup.GET("/user", middleware.JWTMiddleware(), userinfo.UserInfoController)
-
+	// /douyin/publish/action/：登录用户选择视频上传
+	//baseGroup.POST("/publish/action/", middleware.JWTMiddleware(), video.PublishVideoController)
+	// /douyin/publish/list/：用户的视频发布列表，直接列出用户所有投稿过的视频
+	// /douyin/feed/：不限制登录状态，返回按投稿时间倒序的视频列表，视频数由服务端控制，单次最多30个
 	// 互动接口
 	// 社交接口
 	return r
