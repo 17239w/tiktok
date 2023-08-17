@@ -4,6 +4,7 @@ import (
 	"tiktok/config"
 	userinfo "tiktok/controller/UserInfo"
 	userlogin "tiktok/controller/UserLogin"
+	"tiktok/controller/video"
 	"tiktok/middleware"
 	"tiktok/models"
 
@@ -26,9 +27,11 @@ func Init() *gin.Engine {
 	// /douyin/user/：获取用户的id、昵称，如果实现社交部分的功能，还会返回关注数和粉丝数
 	baseGroup.GET("/user", middleware.JWTMiddleware(), userinfo.UserInfoController)
 	// /douyin/publish/action/：登录用户选择视频上传
-	//baseGroup.POST("/publish/action/", middleware.JWTMiddleware(), video.PublishVideoController)
+	baseGroup.POST("/publish/action/", middleware.JWTMiddleware(), video.PublishVideoController)
 	// /douyin/publish/list/：用户的视频发布列表，直接列出用户所有投稿过的视频
+	baseGroup.GET("/publish/list/", middleware.NoAuthToGetUserId(), video.QueryVideoListController)
 	// /douyin/feed/：不限制登录状态，返回按投稿时间倒序的视频列表，视频数由服务端控制，单次最多30个
+	baseGroup.GET("/feed/", video.FeedVideoListController)
 	// 互动接口
 	// 社交接口
 	return r
