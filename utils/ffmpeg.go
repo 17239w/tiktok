@@ -1,16 +1,17 @@
 package utils
 
+// #include <stdio.h>
 // #include <stdlib.h>
-// int startCmd(const char* cmd){
-// 	  return system(cmd);
+// #include <string.h>
+// int startCmd(const char* cmd) {
+//     return system(cmd);
 // }
 
-// import "C"
+import "C"
 
 import (
 	"errors"
 	"fmt"
-	"log"
 	"tiktok/config"
 )
 
@@ -102,9 +103,9 @@ func (v *ChangeVideoToImage) GetQueryString() (ret string, err error) {
 
 // ExecCommand：执行ffmpeg命令
 func (v *ChangeVideoToImage) ExecCommand(cmd string) error {
-	if v.debug {
-		log.Println(cmd)
-	}
+	// if v.debug {
+	// 	log.Println(cmd)
+	// }
 	// // 将Go的字符串cmd转换为C语言的字符串
 	// cCmd := C.CString(cmd)
 	// // 放为C字符串分配的内存，因为Go的垃圾回收器不会自动管理C语言的内存

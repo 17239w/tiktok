@@ -4,6 +4,7 @@ import (
 	"tiktok/config"
 	userinfo "tiktok/controller/UserInfo"
 	userlogin "tiktok/controller/UserLogin"
+	"tiktok/controller/comment"
 	"tiktok/controller/video"
 	"tiktok/middleware"
 	"tiktok/models"
@@ -33,6 +34,15 @@ func Init() *gin.Engine {
 	// /douyin/feed/：不限制登录状态，返回按投稿时间倒序的视频列表，视频数由服务端控制，单次最多30个
 	baseGroup.GET("/feed/", video.FeedVideoListController)
 	// 互动接口
+	//extend 1
+	// /douyin/favorite/action/：登录用户对视频的点赞和取消点赞操作
+	baseGroup.POST("/favorite/action/", middleware.JWTMiddleware(), video.PostFavorController)
+	// /douyin/favorite/list/：查询用户的所有点赞视频
+	baseGroup.GET("/favorite/list/", middleware.NoAuthToGetUserId(), video.QueryFavorVideoListController)
+	// /douyin/comment/action/：登录用户对视频进行评论
+	baseGroup.POST("/comment/action/", middleware.JWTMiddleware(), comment.PostCommentController)
+	// /douyin/comment/list/：查看视频的所有评论，按发布时间倒序
+	baseGroup.GET("/comment/list/", middleware.JWTMiddleware(), comment.QueryCommentListController)
 	// 社交接口
 	return r
 }

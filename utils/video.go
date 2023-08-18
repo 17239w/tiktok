@@ -17,10 +17,10 @@ func GetFileUrl(fileName string) string {
 	return base
 }
 
-// NewFileName：根据user_id+用户发布的视频数量连接成独一无二的文件名
+// NewFileName：根据user_id+用户发布的视频数量 连接成独一无二的文件名
 func NewFileName(userId int64) string {
 	var count int64
-	//调用models层的方法,获取用户发布的视频数量
+	//调用models层,获取用户发布的视频数量
 	err := models.NewVideoDAO().QueryVideoCountByUserId(userId, &count)
 	if err != nil {
 		log.Println(err)
@@ -48,9 +48,9 @@ func FillVideoListFields(userId int64, videos *[]*models.Video) (*time.Time, err
 		if err != nil {
 			continue
 		}
-		//调用cache层，获取用户的粉丝数
+		//调用cache层，获取用户的关注状态、视频的点赞状态、视频的作者信息
 		proxy := cache.NewProxyIndexMap()
-		userInfo.IsFollow = proxy.GetUserRelation(userId, userInfo.Id) //根据cache更新是否被点赞
+		userInfo.IsFollow = proxy.GetUserRelation(userId, userInfo.Id)
 		(*videos)[i].Author = userInfo
 		//若用户登录，则填充点赞状态(IsFavorite字段)
 		if userId > 0 {
@@ -62,7 +62,6 @@ func FillVideoListFields(userId int64, videos *[]*models.Video) (*time.Time, err
 }
 
 // SaveImageFromVideo：将视频切一帧保存到本地
-// isDebug：控制是否打印出执行的ffmepg命令
 func SaveImageFromVideo(name string, isDebug bool) error {
 	//创建一个Video2Image对象
 	changevideoToimage := NewChangeVideoToImage()
