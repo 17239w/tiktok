@@ -6,13 +6,14 @@ package utils
 // int startCmd(const char* cmd) {
 //     return system(cmd);
 // }
-
-import "C"
+import "C" // 启用cgo特性
 
 import (
 	"errors"
 	"fmt"
+	"log"
 	"tiktok/config"
+	"unsafe"
 )
 
 // ChangeVideoToImage：视频转图片
@@ -103,17 +104,17 @@ func (v *ChangeVideoToImage) GetQueryString() (ret string, err error) {
 
 // ExecCommand：执行ffmpeg命令
 func (v *ChangeVideoToImage) ExecCommand(cmd string) error {
-	// if v.debug {
-	// 	log.Println(cmd)
-	// }
-	// // 将Go的字符串cmd转换为C语言的字符串
-	// cCmd := C.CString(cmd)
-	// // 放为C字符串分配的内存，因为Go的垃圾回收器不会自动管理C语言的内存
-	// defer C.free(unsafe.Pointer(cCmd))
-	// // 调用C语言的函数startCmd执行ffmpeg命令
-	// status := C.startCmd(cCmd)
-	// if status != 0 {
-	// 	return errors.New("视频切截图失败")
-	// }
+	if v.debug {
+		log.Println(cmd)
+	}
+	// 将Go的字符串cmd转换为C语言的字符串
+	cCmd := C.CString(cmd)
+	// 放为C字符串分配的内存，因为Go的垃圾回收器不会自动管理C语言的内存
+	defer C.free(unsafe.Pointer(cCmd))
+	// 调用C语言的函数startCmd执行ffmpeg命令
+	status := C.startCmd(cCmd)
+	if status != 0 {
+		return errors.New("视频切截图失败")
+	}
 	return nil
 }
