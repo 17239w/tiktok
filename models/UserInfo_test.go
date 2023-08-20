@@ -15,7 +15,7 @@ func TestMain(m *testing.M) {
 // 查找用户关注列表
 func TestUserInfoDAO_QueryUserFollowsByUserId(t *testing.T) {
 	var userList []*UserInfo
-	err := NewUserInfoDAO().QueryUserFollowsByUserId(1, &userList)
+	err := NewUserInfoDAO().QueryFollowListByUserId(1, &userList)
 	if err != nil {
 		panic(err)
 	}
@@ -27,7 +27,7 @@ func TestUserInfoDAO_QueryUserFollowsByUserId(t *testing.T) {
 // 查找用户粉丝列表
 func TestUserInfoDAO_QueryUserFollowersByUserId(t *testing.T) {
 	var userList []*UserInfo
-	err := NewUserInfoDAO().QueryUserFollowersByUserId(1, &userList)
+	err := NewUserInfoDAO().QueryFollowerListByUserId(1, &userList)
 	if err != nil {
 		panic(err)
 	}

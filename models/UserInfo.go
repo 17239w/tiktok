@@ -112,7 +112,7 @@ func (dao *UserInfoDAO) AddUserFollow(userId int64, followToId int64) error {
 }
 
 // DeleteUserFollow：删除用户关注
-func (dao *UserInfoDAO) DeleteUserFollow(userId int64, followToId int64) error {
+func (dao *UserInfoDAO) CancelUserFollow(userId int64, followToId int64) error {
 	//判断用户是否存在
 	if !dao.IsUserExistById(userId) || !dao.IsUserExistById(followToId) {
 		return errors.New("user is not exist")
@@ -135,8 +135,8 @@ func (dao *UserInfoDAO) DeleteUserFollow(userId int64, followToId int64) error {
 	})
 }
 
-// QueryUserFollowsByUserId：查询用户关注列表
-func (dao *UserInfoDAO) QueryUserFollowsByUserId(userId int64, userFollowsList *[]*UserInfo) error {
+// QueryFollowListByUserId：查询用户关注列表
+func (dao *UserInfoDAO) QueryFollowListByUserId(userId int64, userFollowsList *[]*UserInfo) error {
 	// 判断指针是否为空
 	if userFollowsList == nil {
 		return ErrIvdPtr
@@ -153,8 +153,8 @@ func (dao *UserInfoDAO) QueryUserFollowsByUserId(userId int64, userFollowsList *
 	return nil
 }
 
-// QueryUserFollowersByUserId：查询用户粉丝列表
-func (dao *UserInfoDAO) QueryUserFollowersByUserId(userId int64, userFollowersList *[]*UserInfo) error {
+// QueryFollowerListByUserId：查询用户粉丝列表
+func (dao *UserInfoDAO) QueryFollowerListByUserId(userId int64, userFollowersList *[]*UserInfo) error {
 	// 判断指针是否为空
 	if userFollowersList == nil {
 		return ErrIvdPtr

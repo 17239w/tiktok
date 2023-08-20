@@ -35,7 +35,7 @@ func NewProxyCommentListController(c *gin.Context) *ProxyCommentListController {
 	return &ProxyCommentListController{Context: c}
 }
 
-// Do：执行评论列表的代理Handler
+// Do：执行评论列表的查询
 func (proxy *ProxyCommentListController) Do() {
 	//1.解析参数
 	if err := proxy.parseNum(); err != nil {
